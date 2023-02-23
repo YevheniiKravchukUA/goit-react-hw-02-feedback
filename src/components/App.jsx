@@ -1,8 +1,8 @@
 import { Component } from 'react';
 import { Section } from 'components/Section/Section';
 import { FeedbackOptions } from 'components/Feedback/FeedbackOptions';
-import { Statistics } from 'components/Feedback/Statistics';
-import { Notification } from './Feedback/Notification';
+import { Statistics } from 'components/Feedback/Statistics/Statistics';
+import { Notification } from './Feedback/Statistics/Notification';
 
 export class App extends Component {
   state = {
@@ -17,17 +17,14 @@ export class App extends Component {
   }
 
   countPositiveFeedbackPercentage() {
-    const { good, neutral } = this.state;
-    return `${(((good + neutral) / this.countTotalFeedback()) * 100).toFixed(
-      0
-    )}%`;
+    const { good, bad } = this.state;
+    return `${((good / (good + bad)) * 100).toFixed(0)}%`;
   }
 
-  onLeaveFeedback = evt => {
-    const stateValue = evt.target.name.toLowerCase();
+  onLeaveFeedback = optionName => {
     this.setState(prevState => {
       return {
-        [stateValue]: prevState[stateValue] + 1,
+        [optionName]: prevState[optionName] + 1,
       };
     });
   };
